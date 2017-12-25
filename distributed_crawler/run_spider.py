@@ -27,7 +27,7 @@ from scrapy.utils.project import get_project_settings
 CODE_MATCHER = {"SH": "shmb", "SZ300": "szcn", "SZ000": "szmb", "SZ002": "szsme"}
 SPIDER_MATCHER = {"cfi": Cfi, "cninfo": Cninfo, "notice": Notice}
 
-def generateStartUrls(host, input):
+def generateStartUrls(host, input_):
     # f = open(input, 'r')
     # category = f.readlines()
     # category = [c.strip() for c in category]
@@ -40,10 +40,9 @@ def generateStartUrls(host, input):
     r = redis.Redis(host=host, port=6379)
     for i in start_urls:
         r.lpush('Cfi:start_urls', i)
-    with open(input, 'r') as f:
+    with open(input_, 'r') as f:
         for line in f:
-            js = json.loads(line.strip())
-            code = js['basic_info'][u'代码']
+            code = line.strip()
             if code: 
                 # notice information
                 notice_url = url_settings.NOTICE_INFO_URL%(code.lower())
@@ -93,7 +92,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-host', action='store', dest='host', default='localhost',
                         help='The host address for Redis, default is localhost')
-    parser.add_argument('-input', action='store', dest='input', default='medicine_114_basic.json',
+    parser.add_argument('-input', action='store', dest='input', default='medicine_company_list.txt',
                         help='The file listing items you want to crawl')
     parser.add_argument('-spider', action='store', dest='spider', default='cfi,cninfo,notice',
                         help='The spider to run. You can run multiple spiders together, just use "," to concat. Default is cfi,cninfo,notice')

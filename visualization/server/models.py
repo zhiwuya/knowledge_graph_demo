@@ -13,7 +13,7 @@ import sys
 from server.logger import *
 from server.config import *
 import os
-from config import MYSQL_USER, MYSQL_PWD
+from server.config import MYSQL_USER, MYSQL_PWD
 
 
 
@@ -66,7 +66,7 @@ def execute(conn, cursor, attr):
     js["edges"] = edges
     js["secondary_edges"] = secondary_edges
     mydata = json.dumps(js, ensure_ascii=False).encode("utf8")
-    with open(fname, 'w') as f:
+    with open(fname, 'wb') as f:
         f.write(mydata)
         f.close()
-	return mydata
+    return mydata

@@ -31,20 +31,20 @@ mydata = ""
 
 @app.route("/api/v1", methods=["GET"])
 def parse():
-	global mydata
-	req = request.args
-	# .args.get('username')
-	if "company" in req:
-		company_code = req["company"]
-		mydata = models.execute(conn, cursor, ("company", company_code))
-	elif "person" in req:
-		name = req["person"]
-		mydata = models.execute(conn, cursor, ("person", name))		
-	# return {"resultmsg":"OK","resultno":ERROR_OK},200
-	return render_template('index.html')
+    global mydata
+    req = request.args
+    # .args.get('username')
+    if "company" in req:
+        company_code = req["company"]
+        mydata = models.execute(conn, cursor, ("company", company_code))
+    elif "person" in req:
+        name = req["person"]
+        mydata = models.execute(conn, cursor, ("person", name))        
+    # return {"resultmsg":"OK","resultno":ERROR_OK},200
+    return render_template('index.html')
 
 
 @app.route("/api/data")
 def data():
-	return mydata
+    return mydata
 
